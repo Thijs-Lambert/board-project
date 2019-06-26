@@ -55,18 +55,35 @@ const seedData = async () => {
     username: 'me',
   });
 
-  const comment = new models.Comment({
-    text: 'A comment',
+  const comment1 = new models.Comment({
+    text: 'A first comment',
   })
 
-  const post = new models.Post({
-    title: 'Published the Road to learn React',
+  const comment2 = new models.Comment({
+    text: 'A  second comment',
+  })
+
+  const post1 = new models.Post({
+    title: 'First Post',
     description: 'Bacon ipsum dolor amet turkey meatloaf cupim leberkas swine kielbasa tail, ham capicola burgdoggen corned beef drumstick pastrami frankfurter brisket. Alcatra cow buffalo boudin brisket ham hock picanha salami.',
     user: user.id,
-    comments: [comment.id]
+    comments: [comment1.id]
   });
 
-  await post.save();
+  comment1.post = post1.id;
+
+  const post2 = new models.Post({
+    title: 'Second Post',
+    description: 'Bacon ipsum dolor amet turkey meatloaf cupim leberkas swine kielbasa tail, ham capicola burgdoggen corned beef drumstick pastrami frankfurter brisket. Alcatra cow buffalo boudin brisket ham hock picanha salami.',
+    user: user.id,
+    comments: [comment2.id]
+  });
+
+  comment2.post = post2.id;
+
+  await post1.save();
+  await post2.save();
+  await comment1.save();
+  await comment2.save();
   await user.save();
-  await comment.save();
 };
