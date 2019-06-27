@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
   const post = await req.context.models.Post.create({
     title: req.body.title,
     description: req.body.description,
-    user: req.context.me.id,
+    user: req.body.email,
   });
 
   return res.send(post);

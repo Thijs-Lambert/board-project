@@ -18,7 +18,7 @@ const postSchema = new mongoose.Schema({
     downvotes:  Number
   },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user: { type: String },
 });
 
 const Post = mongoose.model('Post', postSchema);
