@@ -17,11 +17,11 @@ router.get('/:commentId', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  console.log(req.body.post)
   const comment = await req.context.models.Comment.create({
     text: req.body.text,
-    user: req.context.me.id,
   });
-
+  
   return res.send(comment);
 });
 

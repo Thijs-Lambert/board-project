@@ -5,7 +5,7 @@ import Post from './post';
 import Comment from './comment';
 
 const connectDb = () => {
-  return mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateIndex: true });
+  return mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateIndex: true, 'useFindAndModify': false });
 };
 
 const models = { User, Post, Comment };

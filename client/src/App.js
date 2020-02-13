@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import CreatePost from './components/createPost';
+import Post from './components/post/post'
+import CreatePost from './components/createPost/createPost';
 
 import './App.css';
 
@@ -17,22 +18,34 @@ function App() {
     };
 
     fetchData();
-  }, [posts]);
+  }, []);
 
-  const handlePostChange =  (newPost) => {
-    setPosts([...posts, newPost])
-    console.log(posts[0].date)
+  const findPost = (id) => {
+    const found = posts.findIndex((post) => post._id === id);
+    return found;
+  };
+
+  const addPost =  (newPost) => {
+    if(!newPost.errors){
+      setPosts([...posts, newPost])
+    }else {
+      console.log('smth went wrong')
+    } 
   }
 
-  const formatTime = (time) => {
-    const date = new Date(time);
-    return date
+  const updatePost = (post) => {
+    const updatedPost = findPost(post._id);
+    const updatedPosts = [...posts]
+    updatedPosts.splice(updatedPost, 1, post);
+    setPosts(updatedPosts);
   }
+
+  findPost("5d1c567156f31b333e2376ba");
 
   return (
     <div className="App">
-      {posts.map(post => <div key={post._id}><header><h1>{post.title}</h1><h6>{formatTime(post.date).toLocaleDateString()}</h6></header><p>{post.description}</p></div>)}
-      <CreatePost updatePosts={handlePostChange}/>
+      <CreatePost addPost={addPost} />
+      {posts.map(post => <Post key={post._id} postContent={post} updatePost={updatePost}/>)}
     </div>
   );
 }

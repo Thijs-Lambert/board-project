@@ -16,14 +16,36 @@ router.get('/:postId', async (req, res) => {
   return res.send(post);
 });
 
-router.post('/', async (req, res) => {
-  const post = await req.context.models.Post.create({
-    title: req.body.title,
-    description: req.body.description,
-    user: req.body.email,
-  });
+router.post('/:postId/comments', async (req, res) => {
+  try {
+    const comment = await req.context.models.Comment.create({
+      text: req.body.text,
+    })
 
-  return res.send(post);
+    const post = await req.context.models.Post.findByIdAndUpdate(
+      req.params.postId, {$push: {"comments": comment.id}}, {new: true}
+    ).populate('comments')
+
+    return res.send(post);
+    
+  } catch (error) {
+    return res.json(error)
+  }
+});
+
+router.post('/', async (req, res) => {
+  try {
+    const post = await req.context.models.Post.create({
+      title: req.body.title,
+      description: req.body.description,
+      user: req.body.user,
+    })
+
+    return res.send(post);
+    
+  } catch (error) {
+    return res.json(error)
+  }
 });
 
 router.delete('/:postId', async (req, res) => {

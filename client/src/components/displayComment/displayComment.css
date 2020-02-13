@@ -1,0 +1,11 @@
+.commentText {
+  color: green;
+  background-color:#F3F3F3;
+  padding: 10px 3px;
+}
+
+.timestamp {
+  padding-left: 20px;
+  color: black;
+  opacity: 0.4;
+}

@@ -1,0 +1,28 @@
+form {
+  font-family: 'roboto';
+}
+
+fieldset {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-content: center;
+  border-style: none;
+}
+
+input, textarea {
+  border-style: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 10px;
+
+}
+
+input:focus,textarea:focus {
+  outline: none;
+  border-bottom: 1px solid greenyellow;
+}
+
+label {
+  padding-top: 20px;
+}

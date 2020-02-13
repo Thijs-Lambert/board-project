@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 
+import './createPost.css'
 export default class createPost extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +22,9 @@ export default class createPost extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const post = this.state
-    const { data } = await axios.post('/posts/', { ...post })
-    this.props.updatePosts(data)
+    const res = await axios.post('/posts/', { ...post })
+    console.log(res)
+    this.props.addPost(res.data)
     this.setState({
       email: '',
       title: '',

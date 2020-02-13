@@ -1,19 +1,24 @@
 import 'dotenv/config';
+
+import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import express from 'express';
 
 import models, { connectDb } from './models';
 import routes from './routes';
+import checkAuth from './middlewares/auth';
 
 const app = express();
 
 // Application-Level Middleware
-
 app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
+  next();
+});
 
 app.use(async (req, res, next) => {
   req.context = {
@@ -24,14 +29,12 @@ app.use(async (req, res, next) => {
 });
 
 // Routes
-
 app.use('/auth', routes.auth);
 app.use('/users', routes.user);
 app.use('/posts', routes.post);
 app.use('/comments', routes.comment);
 
 // Start
-
 const eraseDatabaseOnSync = true;
 
 connectDb().then(async () => {
@@ -42,7 +45,7 @@ connectDb().then(async () => {
       models.Comment.deleteMany({}),
     ]);
 
-    seedData();
+    //seedData();
   }
 
   app.listen(process.env.PORT, () =>
@@ -50,40 +53,40 @@ connectDb().then(async () => {
   );
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// dummy data for dev
+
 const seedData = async () => {
   const user = new models.User({
     username: 'me',
   });
 
-  const comment1 = new models.Comment({
-    text: 'A first comment',
+  const comment = new models.Comment({
+    text: 'A Comment',
   })
 
-  const comment2 = new models.Comment({
-    text: 'A  second comment',
-  })
-
-  const post1 = new models.Post({
-    title: 'First Post',
-    description: 'Bacon ipsum dolor amet turkey meatloaf cupim leberkas swine kielbasa tail, ham capicola burgdoggen corned beef drumstick pastrami frankfurter brisket. Alcatra cow buffalo boudin brisket ham hock picanha salami.',
+  const post = new models.Post({
+    title: 'This is an example post',
+    description: 'Use the form on top of the page to add your own topics to discuss. Bacon ipsum dolor amet turkey meatloaf cupim leberkas swine kielbasa tail, ham capicola burgdoggen corned beef drumstick pastrami frankfurter brisket. Alcatra cow buffalo boudin brisket ham hock picanha salami.',
     user: user.id,
-    comments: [comment1.id]
+    comments: [comment.id]
   });
 
-  comment1.post = post1.id;
+  comment.post = post.id;
 
-  const post2 = new models.Post({
-    title: 'Second Post',
-    description: 'Bacon ipsum dolor amet turkey meatloaf cupim leberkas swine kielbasa tail, ham capicola burgdoggen corned beef drumstick pastrami frankfurter brisket. Alcatra cow buffalo boudin brisket ham hock picanha salami.',
-    user: user.id,
-    comments: [comment2.id]
-  });
-
-  comment2.post = post2.id;
-
-  await post1.save();
-  await post2.save();
-  await comment1.save();
-  await comment2.save();
+  await post.save();
+  await comment.save();
   await user.save();
 };
